@@ -1,4 +1,26 @@
-﻿# RID - Roof information dataset
+﻿filenames_train_val_test_split: this folder includes .txt files which specify the train - val - test split for the networks trained for the paper.
+
+images_annotation_experiment_geotiff: this folder includes 26 images, one for each building labeled in the annotation experiment. Images are downloaded
+using the Google Maps Static API. The images are georeferenced to be able to create the masks from the georeferenced annotation data. On github, you can
+find code to save the geotiffs as .pngs
+
+images_roof_centered_geotiff: this folder includes 1880 images downloaded using the Google Maps Static API. The images are georeferenced to be able to
+create the masks from the georeferenced annotation data.
+
+masks_segments_reviewed: this folder includes 1880 masks for semantic segmentation of roof segments. Masks contain values from 0-17 which refer to the
+classes background, 16 azimuth classes (e.g. south, south-east etc.) and flat. You can create masks with different class configurations with our code on github.
+The masks are derived from the labels in the version “reviewed”, meaning after the first revision step. You can find the initial annotations and code to generate
+respective masks on github.
+
+masks_superstructures_annotation_experiment: this folder includes 130 masks which function as test dataset for our paper. The masks are derived from the 26
+images and include annotations of 5 different labelers for the 26 buildings.
+
+masks_superstructures_reviewed: this folder includes 1880 masks for semantic segmentation of roof superstructures. Masks contain values with respect to
+superstructure classe (e.g. pvmodule, window, etc.). See the paper for more information. You can create masks with different class configurations with our code
+on github. The masks are derived from the labels in the version “reviewed”, meaning after the first revision step. You can find the initial annotations and code to
+generate respective masks on github. 
+
+# RID - Roof information dataset
 This code refers to the publication "RID—Roof Information Dataset for Computer Vision-Based Photovoltaic Potential Assessment", https://doi.org/10.3390/rs14102299.
 
 This repository includes datasets for semantic segmentation of roof superstructures and roof roof segments. The code supports data preparation, training and model evaluation. Furthermore, it includes the labels of an annotation experiment with five labelers and its evaluation.
