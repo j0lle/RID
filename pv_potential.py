@@ -117,7 +117,7 @@ def pv_potential_analysis():
     gdf_superstructures_GT.crs = 4327
     gdf_superstructures_GT = gdf_superstructures_GT.to_crs(EPSG_METRIC)
 
-    with open("data\\gdf_image_boundaries.pkl", 'rb') as f:
+    with open(os.path.join("data", "gdf_image_boundaries.pkl"), 'rb') as f:
         gdf_images = pickle.load(f)
     gdf_images.id = gdf_images.id.astype(int)
 
@@ -226,7 +226,7 @@ def pv_potential_analysis():
     for i, A in enumerate(A_list):
         gdf_segments_GT['A_' + str(i+5)] = np.array(A) / np.cos(30 / 360 * 2 * np.pi)
 
-    with open('results\\res_pv_potential.pkl', 'wb') as f:
+    with open(os.path.join('results', 'res_pv_potential.pkl'), 'wb') as f:
         pickle.dump([gdf_segments_GT, gdf_superstructures_PR, gdf_superstructures_GT, gdf_modules_PR, modules_shape_list,
                      modules_shape_list_no_superstructures], f)
 
@@ -265,7 +265,7 @@ def pv_potential_analysis():
 
     E_sums = np.round([np.sum(gdf_segments_GT[col]) / 1000 / 1000 for col in box_plot_cols], 2)
     box_plot_E_gen_TUM_CI(E_specific, box_plot_x_ticks, E_sums, 'Segment energy generation \n in kWh / (a m²) ',
-                    'plots\\pv_potential.svg', colors=[], image_size='one_third_large', show_means=True)
+                      os.path.join('plots', 'pv_potential.svg'), colors=[], image_size='one_third_large', show_means=True)
 
     return
 

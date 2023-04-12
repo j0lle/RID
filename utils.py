@@ -246,7 +246,7 @@ def get_image_gdf_in_directory(DIR_IMAGES_GEOTIFF, save_to_png_path=[]):
     image_id_list = [id[:-4] for id in os.listdir(DIR_IMAGES_GEOTIFF) if id[-4:] == '.tif']
 
     # open image
-    raster_srcs = [gdal.Open(DIR_IMAGES_GEOTIFF + "\\" + str(image_id) + ".tif", gdal.GA_ReadOnly) for image_id in
+    raster_srcs = [gdal.Open(os.path.join(DIR_IMAGES_GEOTIFF, f"{str(image_id)}.tif"), gdal.GA_ReadOnly) for image_id in
             image_id_list]
     image_bbox_list = []
     print('')
@@ -286,7 +286,7 @@ def get_image_gdf_in_directory(DIR_IMAGES_GEOTIFF, save_to_png_path=[]):
 
 
 def get_wartenberg_boundary():
-    file_path_boundary = 'data\\gdf_Wartenberg_boundary.pkl'
+    file_path_boundary = os.path.join('data', 'gdf_Wartenberg_boundary.pkl')    
     # if file of boundary does not exist: get boundary from osm and save
     if not os.path.isfile(file_path_boundary):
         # get way points from osm

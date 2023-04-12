@@ -60,5 +60,5 @@ test_dataset = get_test_dataset(DATA_DIR_ANNOTATION_EXPERIMENT, dir_mask_files_t
                                 preprocess_input,
                                 LABEL_CLASSES_SUPERSTRUCTURES.values())
 
-DIR_PREDICTIONS = DIR_BASE + '\\predictions_test'
+DIR_PREDICTIONS = os.path.join(DIR_BASE, 'predictions_test')
 save_prediction_masks(model, test_dataset, LABEL_CLASSES_SUPERSTRUCTURES, DIR_PREDICTIONS)

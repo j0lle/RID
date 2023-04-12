@@ -29,18 +29,13 @@ from definitions import \
     DIR_BASE
 
 # todo: clean up file path chaos
-# input_file_path = "C:\\00_All\\40_Python\\Masks_CNN_roofs\\testimage.png"
-# file_folder_path = "W:\\Projekte\\Firefly\\Johanna_Prummer\\Masken\\210822_Segments\\Images\\Imgs_Grid17_corrected"
-file_folder_path = "W:\\Projekte\\Firefly\\Team-Rooftop PV\\02_Data\\Base_Images_Wartenberg_per_ID"
-# file_folder_path = "C:\\Users\\ga73pag\\Desktop\\wartenberg\\output\\partial"
+# input_file_path = os.path.join("C:", "00_All", "40_Python", "Masks_CNN_roofs", "testimage.png")
+file_folder_path = os.path.join("W:", "Projekte", "Firefly", "Team-Rooftop PV", "02_Data", "Base_Images_Wartenberg_per_ID")
 image_paths = os.listdir(file_folder_path)
-# save_geotiff_directory = "C:\\00_All\\40_Python\\Masks_CNN_roofs\\images_grid_geotiff"
-# save_geotiff_directory = "C:\\00_All\\40_Python\\Masks_CNN_roofs\\images_grid_repaired_geotiff_partial"
-save_geotiff_directory = DIR_BASE + "\\images_roof_centered_geotiff"
-# csv_image_coordinates_path = "C:\\00_All\\40_Python\\Masks_CNN_roofs\\centroids_Grid17.csv"
-csv_image_coordinates_path = DIR_BASE + "\\data\\centroids_centered_images.csv"
+save_geotiff_directory = os.path.join(DIR_BASE, "images_roof_centered_geotiff")
+csv_image_coordinates_path = os.path.join(DIR_BASE, "data", "centroids_centered_images.csv")
 
-geotiff_source_directory = "C:\\img_gtiff"
+geotiff_source_directory = os.path.join("C:", "img_gtiff")
 
 # use if image coordinates are saved in csv file
 # image_coordinates = pd.read_csv(csv_image_coordinates_path)
@@ -52,7 +47,8 @@ geotiff_source_directory = "C:\\img_gtiff"
 #
 # image_coordinates = pd.DataFrame({'longitude': image_longitude_list, 'latitude': image_latitude_list})
 #### Images from Google Earth ###
-ge_img_filepath = "C:\\Users\\ga73pag\\Desktop\\georef\\01.tif"
+ge_img_filepath = os.path.join("C:", "Users", "ga73pag", "Desktop", "georef", "01.tif")
+
 def get_image_bound_google_earth(img_center):
     '''
     get image boundary for image from google earth
@@ -134,20 +130,20 @@ while lat <= latitude_end + delta_lat:
 gdf_center_points.to_csv('center_points_google_earth.csv')
 
 # save image as geotiff
-dir_images = "C:\\Users\\ga73pag\\Desktop\\georef\\"
-dir_tiffs = dir_images + 'tif'
-dir_jpgs = dir_images + 'png'
+dir_images = os.path.join("C:", "Users", "ga73pag", "Desktop", "georef")
+dir_tiffs = os.path.join(dir_images, 'tif')
+dir_jpgs = os.path.join(dir_images, 'png')
 files_jpgs = os.listdir(dir_jpgs)
 for i, file_png in enumerate(files_jpgs):
     center_point = center_point_list[i]
     bbox = get_image_bound_google_earth((center_point.y, center_point.x))
     bbox = [bbox[1], bbox[0], bbox[3], bbox[2]]
 
-    image = cv2.imread(dir_jpgs + '\\' + str(i + 1) + '.jpg')
+    image = cv2.imread(os.path.join(dir_jpgs, f"{i+1}.jpg"))
     image = cv2.resize(image, (4608, 4608), interpolation=cv2.INTER_AREA)
     # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    file_tif = dir_tiffs + '\\' + str(i+1) + '.tif'
+    file_tif = os.path.join(dir_tiffs, f"{i+1}.tif")
 
     save_as_geotif(bbox, image, file_tif)
 
@@ -155,7 +151,7 @@ for i, file_png in enumerate(files_jpgs):
 ######################## split large tifs #############################################
 file_list = os.listdir(dir_tiffs)
 for file_tif in file_list:
-    cmd = "gdal_retile.py -ps 512 512 -targetDir " + dir_tiffs[:-3] + "small_tifs" + " " + dir_tiffs + "\\" + file_tif
+    cmd = f"gdal_retile.py -ps 512 512 -targetDir {os.path.join(dir_tiffs[:-3], 'small_tifs')} {os.path.join(dir_tiffs, file_tif)}"
     print(os.popen(cmd).read())
 
 
@@ -163,9 +159,9 @@ for file_tif in file_list:
 gdf_Wartenberg_boundary = get_wartenberg_boundary()
 
 ######################## filter test labels #############################################
-df_pv_areas = pd.read_csv(DIR_BASE + "\\" + FILE_VECTOR_LABELS_PV_AREAS)
-df_pv_segments = pd.read_csv(DIR_BASE + "\\" + FILE_VECTOR_LABELS_SEGMENTS)
-df_pv_superstructures = pd.read_csv(DIR_BASE + "\\" + FILE_VECTOR_LABELS_SUPERSTRUCTURES)
+df_pv_areas = pd.read_csv(os.path.join(DIR_BASE, FILE_VECTOR_LABELS_PV_AREAS))
+df_pv_segments = pd.read_csv(os.path.join(DIR_BASE, FILE_VECTOR_LABELS_SEGMENTS))
+df_pv_superstructures = pd.read_csv(os.path.join(DIR_BASE, FILE_VECTOR_LABELS_SUPERSTRUCTURES))
 
 df_pv_segments = df_pv_segments[df_pv_segments['pv_area_id'].isin(df_pv_areas.id)]
 df_pv_superstructures = df_pv_superstructures[df_pv_superstructures['pv_area_id'].isin(df_pv_areas.id)]
@@ -184,11 +180,11 @@ if merge == True:
     for i, geo_tiff_path in enumerate(geo_tiff_paths):
         # count += 1
         # if count < num_grouped:
-        files_string = files_string + "" + geotiff_source_directory + "\\" + geo_tiff_path + "\n"
+        files_string = files_string + "" + os.path.join(geotiff_source_directory, geo_tiff_path) + "\n"
         # else:
         # count = 1
         # group_count = int(i/num_grouped)
-        # files_string = files_string + " " + geotiff_source_directory + "\\" + geo_tiff_path
+        # files_string = files_string + " " + os.path.join(geotiff_source_directory, geo_tiff_path)
     # input_geotiffs.txt
     command_vrt = "gdalbuildvrt -input_file_list input_geotiffs.txt VRT_WB.vrt"
     command = "gdal_merge.py -o merged_tiff.tif -of gtiff VRT_WB.vrt"
@@ -217,7 +213,7 @@ for image_coordinate in image_coordinates.iloc:
         # image_filename = str("%.6f" %image_coordinate.longitude) + '_' + str("%.6f" %image_coordinate.latitude)
         # print(image_filename)
 
-        image_path = file_folder_path + "\\" + image_path
+        image_path = os.path.join(file_folder_path, image_path)
         image_filename = str(int(image_coordinate.id))
 
         if os.path.isfile(image_path):
@@ -229,7 +225,7 @@ for image_coordinate in image_coordinates.iloc:
             ny = image.shape[1]
 
             bbox = get_static_map_bounds(lat, lon, 20, nx, ny)
-            geotiff_path = save_geotiff_directory + "\\" + image_filename + ".tif"
+            ggeotiff_path = os.path.join(save_geotiff_directory, image_filename + ".tif")
             save_as_geotif(bbox, image, geotiff_path)
 
         else:

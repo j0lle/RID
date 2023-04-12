@@ -7,6 +7,7 @@ __maintainer__ = "Sebastian Krapf"
 __email__ = "sebastian.krapf@tum.de"
 __status__ = "alpha"
 
+import os
 
 import cv2
 import numpy as np
@@ -37,8 +38,9 @@ def evaluate_annotation_experiment(label_classes, dir_image_annotation_experimen
             gt_image_file = image_id_list_annotation_experiment[img_id * len(labeler_ids) + labeler_id]
             compare_labeler_ids = labeler_ids[labeler_ids!=labeler_id]
             compare_image_files = [image_id_list_annotation_experiment[img_id * len(labeler_ids) + id] for id in compare_labeler_ids]
-            gt_img = cv2.imread(dir_image_annotation_experiment + '\\' + gt_image_file, 0)
-            compare_images = [cv2.imread(dir_image_annotation_experiment + '\\' + compare_image_file, 0) for compare_image_file in compare_image_files]
+            gt_img = cv2.imread(os.path.join(dir_image_annotation_experiment, gt_image_file), 0)
+            compare_images = [cv2.imread(os.path.join(dir_image_annotation_experiment, compare_image_file), 0) for
+                              compare_image_file in compare_image_files]
             for compare_image in compare_images:
                 CM_AE, CM_AE_class_agnostic = confusion_matrices(gt_img, compare_image, label_classes)
                 # class sensitive
@@ -77,7 +79,7 @@ def visualize_annotation_experiment_confusion_matrix(CM_AE_all_normalized, class
     # plot confustion matrix
     data_label_list = list(class_labels)
     data_label_list.append('background')
-    save_path = 'plots\\cm_all_AE.svg'
+    save_path = os.path.join('plots', 'cm_all_AE.svg')
     confusion_matrix_heatmap_TUM_CI(CM_AE_all_normalized, data_label_list, save_path)
 
     return

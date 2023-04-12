@@ -86,7 +86,7 @@ filter_dataset = create_filter_dataset(DATA_DIR_ANNOTATION_EXPERIMENT, DIR_MASK_
 # Evaluation of model.  This takes long time top compute on CPU.
 # Check if results of evaluation are already saved as pkl file.
 # Important: change the pkl filename when evaluating multiple models!#
-pkl_path = 'data\\res_model_predictions_UNet_2_initial_on_rev_filter_2_TEST.pkl'
+pkl_path = os.path.join('data', 'res_model_predictions_UNet_2_initial_on_rev_filter_2_TEST.pkl')
 
 if os.path.isfile(pkl_path):
     with open(pkl_path, 'rb') as f:

@@ -60,7 +60,7 @@ def get_gdf_images(image_folder_path, save_directory, mode='r'):
     In reade mode, the function tries to read the GeoDataframe from the save_directory.
     '''
 
-    gdf_path = save_directory + '\\data\\gdf_image_boundaries.pkl'
+    gdf_path = os.path.join(save_directory, 'data', 'gdf_image_boundaries.pkl')
 
     if mode == 'r' and os.path.isfile(gdf_path):
         with open(gdf_path, 'rb') as f:
@@ -73,7 +73,7 @@ def get_gdf_images(image_folder_path, save_directory, mode='r'):
         for image_name in image_list:
             print(image_name)
             # open image
-            raster_src = gdal.Open(image_folder_path + "\\" + str(image_name), gdal.GA_ReadOnly)
+            raster_src = gdal.Open(os.path.join(image_folder_path, str(image_name)), gdal.GA_ReadOnly)
 
             # add image bounding box from geotiff to geodataframe
             ulx, xres, xskew, uly, yskew, yres = raster_src.GetGeoTransform()  # coordinates of upper left corner and resolution
@@ -159,18 +159,18 @@ def relocate_segmentation_model_images_and_masks(image_id_list, save_dir, png_or
         progress_string = get_progress_string(round(count/len(image_id_list), 2))
         print('Transforming vector label to mask: ' + progress_string, end="\r")
         # move png from origin to target directory
-        shutil.copy(png_origin_dir + "\\" + str(image_id) + ".png",
-                    save_dir + "\\" + split_type)
+        shutil.copy(os.path.join(png_origin_dir, str(image_id) + ".png"),
+                    os.path.join(save_dir, split_type))
 
         # move mask of all classes from origin to target directory
-        shutil.copy(mask_origin_dir + "\\"  + str(image_id) + ".png",
-            save_dir + "\\" + split_type + "_masks\\")
+        shutil.copy(os.path.join(mask_origin_dir, str(image_id) + ".png"),
+                    os.path.join(save_dir, split_type + "_masks"))
 
     # document the train, val and test split in txt file
-    doc_txt_file_path = save_dir + '\\' + split_type + '.txt'
+    doc_txt_file_path = os.path.join(save_dir, split_type + '.txt')
     with open(doc_txt_file_path, 'w') as f:
         for image_id in image_id_list:
-            f.write(str(os.path.normpath(save_dir + '\\' + split_type + '\\' + str(image_id) + '.png')) + "\n")
+            f.write(str(os.path.normpath(os.path.join(save_dir, split_type, str(image_id) + '.png'))) + "\n")
 
     return
 
@@ -178,7 +178,7 @@ def relocate_segmentation_model_images_and_masks(image_id_list, save_dir, png_or
 def mask_filter(image, image_bbox, image_bbox_px, label_polygon, label_classes):
     filter_mask = np.zeros(512, 512)
 
-    with open('data\\gdf_pvareas_annotation_experiment.pkl', 'rb') as f:
+    with open(os.path.join('data', 'gdf_pvareas_annotation_experiment.pkl'), 'rb') as f:
         gdf_pv_areas_AE = pickle.load(f)
 
     gdf_pv_areas_AE = gdf_pv_areas_AE.to_crs(4326)
@@ -259,7 +259,7 @@ def vector_labels_to_masks(file_vector_labels, dir_binary_masks, mask_generation
                 nothing_happens = True
 
         # save label mask
-        filename_mask = dir_binary_masks + "\\" + str(image_id) + ".png"
+        filename_mask = os.path.join(dir_binary_masks, str(image_id) + ".png")
         if filter:
             image = mask_filter(image, image_bbox, image_bbox_px, label_polygon, label_classes)
         cv2.imwrite(filename_mask, image ) #* 255 / (len(label_classes)+1)
@@ -303,7 +303,7 @@ def train_val_test_split(gdf_test_labels, gdf_images, validation_data_center_poi
                 os.mkdir(dir_segmentation_model_data)
                 sub_dirs = ['train', 'train_masks', 'val', 'val_masks', 'test', 'test_masks']
                 for sub_dir in sub_dirs:
-                    os.mkdir(dir_segmentation_model_data + '\\' + sub_dir)
+                    os.mkdir(os.path.join(dir_segmentation_model_data, sub_dir))
 
             # relocate images and masks to train, val and test subfolders
             for j, data_set_type in enumerate(data_set_types):

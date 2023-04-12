@@ -162,7 +162,7 @@ def visualize_prediction_confusion_matrix(CM_all_normalized, label_classes):
     # plot confustion matrix
     data_label_list = list(label_classes)
     data_label_list.append('background')
-    save_path = 'plots\\cm_all.svg'
+    save_path = os.path.join('plots', 'cm_all.svg')
     confusion_matrix_heatmap_TUM_CI(CM_all_normalized, data_label_list, save_path)
 
     return
@@ -293,7 +293,7 @@ def visualize_top_median_bottom_predictions_and_ground_truth(model, id_top_5, id
         gt_list.append(gt_vector)
         pr_list.append(pr_vector)
 
-    save_path = 'plots\\image_predictions.svg'
+    save_path = os.path.join('plots', 'image_predictions.svg')
     visualize_image_gt_pr(img_list, gt_list, pr_list, label_classes, save_path)
 
     return

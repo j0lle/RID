@@ -7,6 +7,7 @@ __maintainer__ = "Sebastian Krapf"
 __email__ = "sebastian.krapf@tum.de"
 __status__ = "alpha"
 
+import os
 from shapely.geometry import Point, LineString, box, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
 import matplotlib
 matplotlib.use('TkAgg')
@@ -358,9 +359,9 @@ def visualize_image_gt_pr(img_list, gt_list, pr_list, label_classes, save_path):
 
 
 def visualize_labels():
-    dir_images = 'data\\images_roof_centered_png\\'
-    dir_superstructure_masks = 'data\\masks_superstructures_initial\\'
-    dir_segments_masks = 'data\\masks_segments\\'
+    dir_images = os.path.join('data', 'images_roof_centered_png')
+    dir_superstructure_masks = os.path.join('data', 'masks_superstructures_initial')
+    dir_segments_masks = os.path.join('data', 'masks_segments')
     img_files = ['244.png', '373.png']
 
     fig = plt.figure(constrained_layout=True, figsize=(4.6, 3))
@@ -398,8 +399,8 @@ def visualize_labels():
 
     fig.tight_layout(pad=0.02)
 
-    plt.savefig('plots\\eye_catcher.svg', format='svg', dpi=300, bbox_inches='tight')
-
+    plt.savefig(os.path.join('plots', 'eye_catcher.svg'), format='svg', dpi=300, bbox_inches='tight')
+    
     return
 
 
@@ -480,7 +481,7 @@ def visualize_module_placement(image_ids, gdf_images, gdf_segments, gdf_superstr
 
         ax = axs[i]
         # add image
-        image = plt.imread(DIR_IMAGES + "\\" + str(image_id) + '.png')
+        image = plt.imread(os.path.join(DIR_IMAGES, f"{str(image_id)}.png"))
         # get image bounds
         image_bbox = gdf_image.iloc[0].geometry
         x_min = image_bbox.bounds[0]
@@ -517,7 +518,7 @@ def visualize_module_placement(image_ids, gdf_images, gdf_segments, gdf_superstr
         ax.axis("off")
 
     fig.tight_layout()
-    plt.savefig('plots\\module_placement_examples_2d_3d.svg', format='svg', dpi=300, bbox_inches='tight')
+    plt.savefig(os.path.join('plots', 'module_placement_examples_2d_3d.svg'), format='svg', dpi=300, bbox_inches='tight')
 
     return
 
@@ -578,7 +579,7 @@ def segment_polar_plot(label_classes, label_area_count_4, label_area_count_8, la
             edgecolor="white")
 
     fig.tight_layout(pad=0.5)
-    plt.savefig('plots\\segments_polar_plot.svg', format='svg', dpi=300, bbox_inches='tight')
+    plt.savefig(os.path.join('plots', 'segments_polar_plot.svg'), format='svg', dpi=300, bbox_inches='tight')
 
     return
 
@@ -614,6 +615,6 @@ def visualization_annotation_agreement(gdf_annotations, label_classes, annotator
             if len(gdf_plot_class) != 0:
                 gdf_plot_class.plot(ax=ax, color=color, alpha=0.5, edgecolor=edge_color)
 
-    plt.savefig('plots\\annotations.svg', format='svg', dpi=300, bbox_inches='tight')
+    plt.savefig(os.path.join('plots', 'annotations.svg'), format='svg', dpi=300, bbox_inches='tight')
 
     return

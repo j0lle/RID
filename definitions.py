@@ -20,42 +20,46 @@ from shapely.geometry import Point
 ################ Define paths ####################
 ##################################################
 # base directory
-DIR_BASE = os.path.dirname(sys.argv[0])
+DIR_BASE = os.getcwd()
 
 # data directory
-DIR_DATA = DIR_BASE + "\\data"
+DIR_DATA = os.path.join(DIR_BASE, "data")
 
 # training files directories
-DIR_SEGMENTATION_MODEL_DATA = DIR_BASE + "\\" + "segmentation_model_data"
+DIR_SEGMENTATION_MODEL_DATA = os.path.join(DIR_BASE, "segmentation_model_data")
 
 # result directories
-DIR_RESULTS_TRAINING = DIR_BASE + "\\results"
-DIR_PREDICTIONS = DIR_BASE + '\\predictions'
+DIR_RESULTS_TRAINING = os.path.join(DIR_BASE, "results")
+DIR_PREDICTIONS = os.path.join(DIR_BASE, 'predictions')
 
 # make paths if they do not exist
 if not os.path.isdir(DIR_DATA): os.mkdir(DIR_DATA)
 if not os.path.isdir(DIR_SEGMENTATION_MODEL_DATA): os.mkdir(DIR_SEGMENTATION_MODEL_DATA)
 if not os.path.isdir(DIR_RESULTS_TRAINING): os.mkdir(DIR_RESULTS_TRAINING)
 if not os.path.isdir(DIR_PREDICTIONS): os.mkdir(DIR_PREDICTIONS)
-if not os.path.isdir(DIR_BASE + "\\plot"): os.mkdir(DIR_BASE + "\\plot")
+if not os.path.isdir(os.path.join(DIR_BASE, "plot")): os.mkdir(os.path.join(DIR_BASE, "plot"))
 
 # image directories
-DIR_IMAGES_GEOTIFF = DIR_DATA + "\\images_roof_centered_geotiff"  # "images_annotation_experiment_geotiff" #
-DIR_IMAGES_PNG = DIR_DATA + "\\images_roof_centered_png"  # images_annotation_experiment_png"
+DIR_IMAGES_GEOTIFF = os.path.join(DIR_DATA, "images_roof_centered_geotiff")  # "images_annotation_experiment_geotiff" #
+DIR_IMAGES_PNG = os.path.join(DIR_DATA, "images_roof_centered_png")  # images_annotation_experiment_png"
+
 # mask directories
-DIR_MASKS_SUPERSTRUCTURES = DIR_DATA + "\\masks_superstructures_reviewed" #_initial"
-DIR_MASKS_SEGMENTS = DIR_DATA + "\\masks_segments"
+DIR_MASKS_SUPERSTRUCTURES = os.path.join(DIR_DATA, "masks_superstructures_reviewed")  #_initial"
+DIR_MASKS_SEGMENTS = os.path.join(DIR_DATA, "masks_segments")
+
 # annotation experiment directories
-DATA_DIR_ANNOTATION_EXPERIMENT = DIR_BASE + '\\raster_data_annotation_experiment'
-DIR_MASKS_SUPERSTRUCTURES_ANNOTATION_EXPERIMENT = DIR_DATA + "\\masks_superstructures_annotation_experiment"
-DIR_MASKS_PV_AREAS_ANNOTATION_EXPERIMENT = DIR_DATA + "\\masks_pv_areas_annotation_experiment"
+DATA_DIR_ANNOTATION_EXPERIMENT = os.path.join(DIR_BASE, 'raster_data_annotation_experiment')
+DIR_MASKS_SUPERSTRUCTURES_ANNOTATION_EXPERIMENT = os.path.join(DIR_DATA, "masks_superstructures_annotation_experiment")
+DIR_MASKS_PV_AREAS_ANNOTATION_EXPERIMENT = os.path.join(DIR_DATA, "masks_pv_areas_annotation_experiment")
+
 # training files
-DIR_MASK_FILES = DIR_SEGMENTATION_MODEL_DATA + "\\filenames_reviewed"
+DIR_MASK_FILES = os.path.join(DIR_SEGMENTATION_MODEL_DATA, "filenames_reviewed")
+
 # vector label files
-FILE_VECTOR_LABELS_SUPERSTRUCTURES = "data\\" + "obstacles_reviewed.csv" #_initial.csv" #
-FILE_VECTOR_LABELS_SEGMENTS = "data\\" + "segments_reviewed.csv" #_initial.csv" #
-FILE_VECTOR_LABELS_PV_AREAS = "data\\" + "pv_areas_reviewed.csv" #_initial.csv" #
-FILE_VECTOR_LABELS_ANNOTATION_EXPERIMENT = "data\\" + "obstacles_annotation_experiment.csv"
+FILE_VECTOR_LABELS_SUPERSTRUCTURES = os.path.join("data", "obstacles_reviewed.csv")  #_initial.csv" #
+FILE_VECTOR_LABELS_SEGMENTS = os.path.join("data", "segments_reviewed.csv")  #_initial.csv" #
+FILE_VECTOR_LABELS_PV_AREAS = os.path.join("data", "pv_areas_reviewed.csv")  #_initial.csv" #
+FILE_VECTOR_LABELS_ANNOTATION_EXPERIMENT = os.path.join("data", "obstacles_annotation_experiment.csv")
 
 ##################################################
 ########### Define class definition ##############
@@ -99,9 +103,9 @@ EPSG_METRIC = 25832
 MODEL_NAME = 'UNet_2_initial'
 MODEL_TYPE = 'UNet' # options are: 'Unet', 'FPN' or 'PSPNet'
 BACKBONE = 'resnet34' #resnet34, efficientnetb2
-DATA_VERSION = '2_initial'  # 2_rev, 3_rev, 4_initial ...
+DATA_VERSION = '2_rev'  # 2_rev, 3_rev, 4_initial ...
 
-IMAGE_SHAPE = cv2.imread(DIR_IMAGES_GEOTIFF + '\\' + os.listdir(DIR_IMAGES_GEOTIFF)[0], 0).shape
+IMAGE_SHAPE = cv2.imread(os.path.join(DIR_IMAGES_GEOTIFF, os.listdir(DIR_IMAGES_GEOTIFF)[0]), 0).shape
 
 ############################################################
 ########### Look Up Table Technical Potential ##############

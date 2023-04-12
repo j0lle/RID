@@ -50,7 +50,7 @@ from definitions import \
     MODEL_NAME, \
     MODEL_TYPE, \
     DATA_VERSION, \
-    BACKBONE
+    BACKBONE, DIR_RESULTS_TRAINING
 
 ### Define labeling classes
 from definitions import \
@@ -165,8 +165,8 @@ visualize_class_distribution(LABEL_CLASSES_SEGMENTS)
 # Evaluation annotation agreement of superstructure labels. This takes long time to compute.
 # Check if results of evaluation are already saved as pkl file.
 # Important: change the pkl filename when evaluating multiple models!
-if os.path.isfile('data\\res_annotation_experiment.pkl'):
-    with open('data\\res_annotation_experiment.pkl', 'rb') as f:
+if os.path.isfile(os.path.join('data', 'res_annotation_experiment.pkl')):
+    with open(os.path.join('data', 'res_annotation_experiment.pkl'), 'rb') as f:
         [CM_AE_all, CM_AE_list, CM_AE_class_agnostic_all, CM_AE_class_agnostic_list] = pickle.load(f)
     # generate dataframes with all class specific IoUs
     df_IoU_AE = df_IoU_from_confusion_matrix(CM_AE_list, LABEL_CLASSES_SUPERSTRUCTURES)
@@ -199,8 +199,8 @@ visualize_annotation_experiment_confusion_matrix(CM_AE_all_normalized, LABEL_CLA
 # Evaluation annotation agreement of roof outline. This takes long time to compute
 # Check if results of evaluation are already saved as pkl file.
 # Important: change the pkl filename when evaluating multiple models!
-if os.path.isfile('data\\res_annotation_experiment_pv_areas.pkl'):
-    with open('data\\res_annotation_experiment_pv_areas.pkl', 'rb') as f:
+if os.path.isfile(os.path.join('data', 'res_annotation_experiment_pv_areas.pkl')):
+    with open(os.path.join('data', 'res_annotation_experiment_pv_areas.pkl'), 'rb') as f:
         [CM_AE_pv_area_all, CM_AE_pv_area_list] = pickle.load(f)
 else:
     image_id_pv_area_list_annotation_experiment = os.listdir(DIR_MASKS_PV_AREAS_ANNOTATION_EXPERIMENT)
@@ -212,11 +212,11 @@ else:
         )
 
 
-# ########################################################################################################################
-# ### 5) Train model for semantic segmentation of superstructure - Make sure to use a GPU
-# ########################################################################################################################
-# model = model_training(MODEL_TYPE, LABEL_CLASSES_SUPERSTRUCTURES, DIR_SEGMENTATION_MODEL_DATA, DIR_RESULTS_TRAINING,
-#                        IMAGE_SHAPE)
+########################################################################################################################
+### 5) Train model for semantic segmentation of superstructure - Make sure to use a GPU
+########################################################################################################################
+model = model_training(MODEL_TYPE, BACKBONE, LABEL_CLASSES_SUPERSTRUCTURES, DIR_SEGMENTATION_MODEL_DATA, DIR_MASK_FILES, DIR_RESULTS_TRAINING,
+                       IMAGE_SHAPE)
 
 
 ########################################################################################################################
@@ -241,7 +241,7 @@ filter_dataset = create_filter_dataset(DATA_DIR_ANNOTATION_EXPERIMENT, dir_mask_
 # Evaluation of model.  This takes long time top compute on CPU.
 # Check if results of evaluation are already saved as pkl file.
 # Important: change the pkl filename when evaluating multiple models!
-results_path = os.path.join('data\\res_model_predictions', 'res_model_predictions_UNet_2_initial.pkl')
+results_path = os.path.join('data', 'res_model_predictions', 'res_model_predictions_UNet_2_initial.pkl')
 if os.path.isfile(results_path):
     with open(results_path, 'rb') as f:
         [df_IoUs, CM_all, CM_list, CM_class_agnostic_all, CM_class_agnostic_list] = pickle.load(f)

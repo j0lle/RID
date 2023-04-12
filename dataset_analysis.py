@@ -32,7 +32,7 @@ def mask_pixel_per_image(dir_masks, classes, image_shape):
     for count, file in enumerate(file_list):
         progress_string = get_progress_string(round(count / len(file_list), 2))
         print('Evaluating class pixels per image: ' + progress_string, end="\r")
-        file_path = dir_masks + '\\' + file
+        file_path = os.path.join(dir_masks, file)
         img = cv2.imread(file_path, 0)
         BG_count += np.sum([img == len(classes)]) / (x_px*y_px)
         class_count += np.sum([img != len(classes)]) / (x_px*y_px)

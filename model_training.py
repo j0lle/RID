@@ -124,6 +124,7 @@ class Dataset:
 
         # read data
         image = cv2.imread(self.images_fps[i])
+         #print(image.size)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         mask = cv2.imread(self.masks_fps[i], 0)
 
