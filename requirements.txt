@@ -16,7 +16,7 @@ flatbuffers==23.3.3
 fonttools==4.39.3
 gast==0.5.3
 GDAL==3.6.3
-geopandas==0.12.2
+geopandas==0.8.2
 google-auth==2.17.2
 google-auth-oauthlib==1.0.0
 google-pasta==0.2.0
@@ -48,7 +48,7 @@ opencv-python-headless==4.7.0.72
 opt-einsum==3.3.0
 overpy==0.6
 packaging==23.0
-pandas==2.0.0
+pandas==1.1.5
 Pillow==9.5.0
 protobuf==4.22.1
 pyasn1==0.4.8
@@ -68,7 +68,7 @@ scikit-learn==1.2.2
 scipy==1.9.1
 seaborn==0.12.2
 segmentation-models==1.0.1
-shapely==2.0.1
+shapely==1.*
 six==1.16.0
 tensorboard==2.12.1
 tensorboard-data-server==0.7.0

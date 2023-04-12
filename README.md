@@ -1,4 +1,6 @@
-﻿filenames_train_val_test_split: this folder includes .txt files which specify the train - val - test split for the networks trained for the paper.
+﻿# README for the data from https://doi.org/10.14459/2022mp1655470
+
+filenames_train_val_test_split: this folder includes .txt files which specify the train - val - test split for the networks trained for the paper.
 
 images_annotation_experiment_geotiff: this folder includes 26 images, one for each building labeled in the annotation experiment. Images are downloaded
 using the Google Maps Static API. The images are georeferenced to be able to create the masks from the georeferenced annotation data. On github, you can
@@ -19,6 +21,9 @@ masks_superstructures_reviewed: this folder includes 1880 masks for semantic seg
 superstructure classe (e.g. pvmodule, window, etc.). See the paper for more information. You can create masks with different class configurations with our code
 on github. The masks are derived from the labels in the version “reviewed”, meaning after the first revision step. You can find the initial annotations and code to
 generate respective masks on github. 
+
+# Some notes from Jelly
+use shapely < 2, otherwise it will not work
 
 # RID - Roof information dataset
 This code refers to the publication "RID—Roof Information Dataset for Computer Vision-Based Photovoltaic Potential Assessment", https://doi.org/10.3390/rs14102299.
